@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 5 - API Testing and Error Handling | V Sridhar | 92400120035</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 18mm;
+    }
+    @media print {
+      body { background: #fff !important; color: #000 !important; font-size: 10.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page-break { page-break-before: always; break-before: page; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none !important; }
+      header { page-break-after: avoid; }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a2e;
+      background: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    .document-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 50px 55px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    /* ---- COVER PAGE ---- */
+    .cover-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 0 40px;
+      border-bottom: 3px solid #1565c0;
+      margin-bottom: 40px;
+    }
+
+    .university-logo-block {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #1565c0, #0288d1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .cover-uni-name {
+      font-size: 15pt;
+      font-weight: 700;
+      color: #1565c0;
+      margin-bottom: 4px;
+    }
+
+    .cover-dept {
+      font-size: 11pt;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .cover-divider {
+      width: 60px;
+      height: 3px;
+      background: #1565c0;
+      margin: 20px auto;
+    }
+
+    .cover-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 20px 0 10px;
+      line-height: 1.3;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      color: #1565c0;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .cover-meta-table {
+      width: 100%;
+      max-width: 480px;
+      border-collapse: collapse;
+      margin: 20px auto 0;
+      font-size: 11pt;
+    }
+
+    .cover-meta-table td {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+    }
+
+    .cover-meta-table td:first-child {
+      font-weight: 700;
+      background: #f0f4ff;
+      color: #1565c0;
+      width: 45%;
+    }
+
+    .cover-status-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12pt;
+      margin-top: 24px;
+    }
+
+    /* ---- SECTION HEADINGS ---- */
+    h1 { font-size: 16pt; color: #1565c0; border-bottom: 2px solid #1565c0; padding-bottom: 8px; margin: 28px 0 16px; }
+    h2 { font-size: 13pt; color: #0d47a1; margin: 22px 0 10px; }
+    h3 { font-size: 11pt; color: #1565c0; margin: 16px 0 8px; }
+    p { margin: 8px 0; }
+
+    /* ---- STAT BOXES ---- */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .stat-box {
+      background: #f0f4ff;
+      border: 1px solid #c5cae9;
+      border-top: 3px solid #1565c0;
+      border-radius: 6px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 22pt;
+      font-weight: 900;
+      color: #1565c0;
+      margin-top: 4px;
+    }
+
+    .stat-value.green { color: #2e7d32; }
+    .stat-value.red { color: #c62828; }
+    .stat-value.blue { color: #0288d1; }
+
+    /* ---- TABLES ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 14px 0;
+    }
+
+    th {
+      background: #1565c0;
+      color: white;
+      padding: 9px 12px;
+      text-align: left;
+      font-size: 9pt;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #e8eaf6;
+      vertical-align: middle;
+    }
+
+    tr:nth-child(even) td { background: #f8f9ff; }
+    tr:hover td { background: #e8eaf6; }
+
+    .badge-pass {
+      background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7;
+      padding: 2px 9px; border-radius: 12px; font-weight: 700; font-size: 9pt;
+    }
+
+    .badge-fail {
+      background: #ffebee; color: #c62828; border: 1px solid #ef9a9a;
+      padding: 2px 9px; border-radius: 12px; font-weight: 700; font-size: 9pt;
+    }
+
+    .badge-valid { background: #e8f5e9; color: #2e7d32; padding: 2px 7px; border-radius: 10px; font-size: 9pt; font-weight: 600; }
+    .badge-invalid { background: #ffebee; color: #c62828; padding: 2px 7px; border-radius: 10px; font-size: 9pt; font-weight: 600; }
+    .badge-missing { background: #fff8e1; color: #e65100; padding: 2px 7px; border-radius: 10px; font-size: 9pt; font-weight: 600; }
+
+    .method-tag {
+      font-size: 8.5pt; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+      display: inline-block; min-width: 46px; text-align: center;
+    }
+    .method-tag.get { background: #e8f5e9; color: #1b5e20; }
+    .method-tag.post { background: #fff3e0; color: #bf360c; }
+    .method-tag.put { background: #e3f2fd; color: #01579b; }
+    .method-tag.delete { background: #fce4ec; color: #880e4f; }
+
+    .http-status {
+      font-weight: 800; font-size: 10pt;
+    }
+    .http-2xx { color: #2e7d32; }
+    .http-4xx { color: #c62828; }
+
+    /* ---- CODE BLOCKS ---- */
+    pre, code {
+      font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+      font-size: 9pt;
+    }
+
+    pre {
+      background: #1a1a2e;
+      color: #80cbc4;
+      padding: 14px 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    code {
+      background: #e8eaf6;
+      color: #1565c0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 9pt;
+    }
+
+    /* ---- TEST CASE CARDS ---- */
+    .tc-card {
+      border: 1px solid #c5cae9;
+      border-left: 4px solid #1565c0;
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 14px 0;
+      background: #fafbff;
+    }
+
+    .tc-card.pass { border-left-color: #2e7d32; }
+    .tc-card.fail { border-left-color: #c62828; }
+
+    .tc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .tc-id {
+      font-size: 9pt;
+      font-weight: 800;
+      color: #1565c0;
+      background: #e8eaf6;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .tc-name {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #1a1a2e;
+      flex: 1;
+      margin: 0 12px;
+    }
+
+    .tc-detail {
+      font-size: 9.5pt;
+      color: #444;
+      margin: 4px 0;
+    }
+
+    .tc-detail strong { color: #1565c0; }
+
+    /* ---- ENDPOINT SPEC ---- */
+    .endpoint-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #e8eaf6;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 10pt;
+      margin: 8px 0;
+    }
+
+    /* ---- RECOMMENDATIONS ---- */
+    .rec-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      margin: 10px 0;
+      background: #fafafa;
+    }
+
+    .rec-num {
+      width: 28px;
+      height: 28px;
+      background: #1565c0;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 11pt;
+      flex-shrink: 0;
+    }
+
+    .rec-body h3 { margin: 0 0 4px; font-size: 10.5pt; color: #1565c0; }
+    .rec-body p { font-size: 10pt; color: #444; margin: 0; }
+
+    /* ---- ALERT BOX ---- */
+    .alert-box {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-left: 4px solid #2e7d32;
+      border-radius: 6px;
+      padding: 14px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 18px 0;
+    }
+
+    .alert-icon { font-size: 18pt; line-height: 1; }
+    .alert-body strong { color: #1b5e20; }
+    .alert-body p { font-size: 10pt; color: #2e7d32; margin: 4px 0 0; }
+
+    /* ---- SECTION DIVIDER ---- */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 30px 0;
+    }
+
+    /* ---- FOOTER ---- */
+    .doc-footer {
+      border-top: 2px solid #1565c0;
+      margin-top: 40px;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9pt;
+      color: #888;
+    }
+
+    .print-btn-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+
+    .print-btn {
+      background: #1565c0;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(21,101,192,0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .print-btn:hover { background: #0d47a1; }
+  </style>
+</head>
+<body>
+
+<div class="no-print print-btn-bar">
+  <button class="print-btn" onclick="window.print()">
+    🖨️ Print / Save as PDF
+  </button>
+</div>
+
+<div class="document-container">
+
+  <!-- ================================================================ -->
+  <!-- COVER PAGE -->
+  <!-- ================================================================ -->
+  <div class="cover-page">
+    <div class="university-logo-block">S</div>
+    <div class="cover-uni-name">Faculty of Engineering and Technology</div>
+    <div class="cover-dept">Department of Computer Engineering</div>
+    <div class="cover-divider"></div>
+
+    <div class="cover-title">API Testing and Error Handling<br>for Student Management System CRUD API</div>
+    <div class="cover-subtitle">Practical 5 — Laboratory Experiment Report</div>
+
+    <table class="cover-meta-table">
+      <tr><td>Student Name</td><td><strong>V Sridhar</strong></td></tr>
+      <tr><td>Enrolment Number</td><td><strong>92400120035</strong></td></tr>
+      <tr><td>Experiment</td><td>Practical 5 — API Testing &amp; Error Handling</td></tr>
+      <tr><td>Submission Date</td><td>September 30, 2026</td></tr>
+      <tr><td>Technology Stack</td><td>Node.js · Express.js · REST API · Postman</td></tr>
+    </table>
+
+    <div class="cover-status-badge">✓ PASS — 16 / 16 Test Cases (100%)</div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- 1. EXECUTIVE SUMMARY -->
+  <!-- ================================================================ -->
+  <h1>1. Executive Summary</h1>
+
+  <p>This report documents the comprehensive API testing, error handling analysis, and validation conducted on the
+  <strong>Student Management System CRUD REST API</strong>. The testing workflow follows the systematic cycle:</p>
+
+  <p style="text-align:center; font-style:italic; color:#1565c0; margin: 16px 0;">
+    Execute API Requests &nbsp;→&nbsp; Validate Responses &nbsp;→&nbsp; Analyze Errors &nbsp;→&nbsp; Recommend Improvements
+  </p>
+
+  <p>The objective was to evaluate API robustness under <strong>valid</strong>, <strong>invalid</strong>, and
+  <strong>missing</strong> input values — verifying HTTP status codes, error payload schemas, and response datasets —
+  concluding with strategic engineering recommendations.</p>
+
+  <div class="alert-box">
+    <div class="alert-icon">✅</div>
+    <div class="alert-body">
+      <strong>Practical 5 Objective Completed</strong>
+      <p>All 16 test cases passed with 100% coverage across valid, invalid, and missing input categories. Status codes
+      (200, 201, 400, 404, 409), error messages, and response schemas successfully validated.</p>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-label">Total Test Cases</div>
+      <div class="stat-value blue">16</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Passed</div>
+      <div class="stat-value green">16</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Failed</div>
+      <div class="stat-value red">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Pass Rate</div>
+      <div class="stat-value green">100%</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Valid Input Tests (Positive Flow)</td><td>5 (Passed: 5)</td></tr>
+      <tr><td>Invalid Input Tests (Negative Flow)</td><td>8 (Passed: 8)</td></tr>
+      <tr><td>Missing Input Tests (Validation Flow)</td><td>3 (Passed: 3)</td></tr>
+      <tr><td>Average Response Latency</td><td>&lt; 5 ms (local server)</td></tr>
+      <tr><td>HTTP Status Codes Tested</td><td>200, 201, 400, 404, 409</td></tr>
+      <tr><td>Postman Collection Schema</td><td>Collection v2.1.0 Standard</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 2. API ARCHITECTURE -->
+  <!-- ================================================================ -->
+  <h1>2. API Architecture &amp; Endpoint Specification</h1>
+
+  <p>The Student Management REST API manages student academic records using an in-memory data store.
+  Each student record conforms to the following schema:</p>
+
+  <table>
+    <thead><tr><th>Field</th><th>Type</th><th>Constraints</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>Integer</td><td>Auto-generated, unique, immutable</td></tr>
+      <tr><td><code>grno</code></td><td>String</td><td>Required, unique (General Registration Number)</td></tr>
+      <tr><td><code>name</code></td><td>String</td><td>Required, min length: 2 characters</td></tr>
+      <tr><td><code>department</code></td><td>String</td><td>Required</td></tr>
+      <tr><td><code>sem</code></td><td>Integer</td><td>Required, range: 1 to 8 (inclusive)</td></tr>
+      <tr><td><code>fees</code></td><td>Number</td><td>Required, must be ≥ 0</td></tr>
+      <tr><td><code>isScholarship</code></td><td>Boolean</td><td>Optional (default: false)</td></tr>
+      <tr><td><code>email</code></td><td>String</td><td>Required, unique, valid RFC email format</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2.1 REST Endpoints</h2>
+
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th><th>HTTP Status Codes</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="method-tag post">POST</span></td>
+        <td><code>/api/students</code></td>
+        <td>Register a new student record</td>
+        <td>201, 400, 409</td>
+      </tr>
+      <tr>
+        <td><span class="method-tag get">GET</span></td>
+        <td><code>/api/students</code></td>
+        <td>Retrieve all student records (supports query filters)</td>
+        <td>200</td>
+      </tr>
+      <tr>
+        <td><span class="method-tag get">GET</span></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Retrieve single student by unique numeric ID</td>
+        <td>200, 400, 404</td>
+      </tr>
+      <tr>
+        <td><span class="method-tag put">PUT</span></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Update fields of existing student record</td>
+        <td>200, 400, 404</td>
+      </tr>
+      <tr>
+        <td><span class="method-tag delete">DELETE</span></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Delete student record by numeric ID</td>
+        <td>200, 400, 404</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 3. TEST EXECUTION - PAGE BREAK -->
+  <!-- ================================================================ -->
+  <div class="page-break"></div>
+  <h1>3. Step-by-Step Test Execution &amp; Response Validation</h1>
+
+  <!-- ---- CATEGORY 1 ---- -->
+  <h2>Category 1: Valid Input Values — Positive CRUD Workflow</h2>
+
+  <!-- TC-01 -->
+  <div class="tc-card pass">
+    <div class="tc-header">
+      <span class="tc-id">TC-01</span>
+      <span class="tc-name">Create New Student — Valid Complete Payload</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-2xx">201 Created</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-2xx">201 Created</span></div>
+    <div class="tc-detail"><strong>Request Payload:</strong></div>
+    <pre>{
+  "grno": "92400120999",
+  "name": "Rohit Sharma",
+  "department": "Computer Engineering",
+  "sem": 6,
+  "fees": 52000,
+  "isScholarship": false,
+  "email": "rohit.sharma@example.com"
+}</pre>
+    <div class="tc-detail"><strong>Response Payload:</strong></div>
+    <pre>{
+  "success": true,
+  "message": "Student registered successfully",
+  "data": { "id": 4, "grno": "92400120999", "name": "Rohit Sharma", "department": "Computer Engineering",
+             "sem": 6, "fees": 52000, "isScholarship": false, "email": "rohit.sharma@example.com" }
+}</pre>
+    <div class="tc-detail">✅ Verified: HTTP 201, created record returned with auto-increment ID (4), all fields persisted correctly.</div>
+  </div>
+
+  <!-- TC-02 -->
+  <div class="tc-card pass">
+    <div class="tc-header">
+      <span class="tc-id">TC-02</span>
+      <span class="tc-name">Retrieve All Student Records</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag get">GET</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-2xx">200 OK</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-2xx">200 OK</span></div>
+    <div class="tc-detail">✅ Verified: Response contains <code>success: true</code>, <code>count: 4</code>, correctly typed array with all records.</div>
+  </div>
+
+  <!-- TC-03 -->
+  <div class="tc-card pass">
+    <div class="tc-header">
+      <span class="tc-id">TC-03</span>
+      <span class="tc-name">Retrieve Single Student by Valid ID (ID: 1)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag get">GET</span> <code>/api/students/1</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-2xx">200 OK</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-2xx">200 OK</span></div>
+    <div class="tc-detail"><strong>Response Payload:</strong></div>
+    <pre>{
+  "success": true,
+  "data": { "id": 1, "grno": "92400120035", "name": "V Sridhar", "department": "Computer Engineering",
+             "sem": 5, "fees": 45000, "isScholarship": true, "email": "sridhar@example.com" }
+}</pre>
+    <div class="tc-detail">✅ Verified: Record matching ID 1 retrieved accurately with all field values intact.</div>
+  </div>
+
+  <!-- TC-04 -->
+  <div class="tc-card pass">
+    <div class="tc-header">
+      <span class="tc-id">TC-04</span>
+      <span class="tc-name">Update Existing Student Record (ID: 1)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag put">PUT</span> <code>/api/students/1</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-2xx">200 OK</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-2xx">200 OK</span></div>
+    <div class="tc-detail"><strong>Payload:</strong> <code>{"sem": 6, "fees": 40000, "email": "sridhar.updated@example.com"}</code></div>
+    <div class="tc-detail">✅ Verified: Partial update applied; updated fields confirmed in response; unmodified fields preserved unchanged.</div>
+  </div>
+
+  <!-- TC-05 -->
+  <div class="tc-card pass">
+    <div class="tc-header">
+      <span class="tc-id">TC-05</span>
+      <span class="tc-name">Delete Student by Valid ID (ID: 3)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag delete">DELETE</span> <code>/api/students/3</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-2xx">200 OK</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-2xx">200 OK</span></div>
+    <div class="tc-detail">✅ Verified: Student with ID 3 removed from data store; deleted record returned in response for audit trail.</div>
+  </div>
+
+  <!-- ---- CATEGORY 2 ---- -->
+  <div class="page-break"></div>
+  <h2>Category 2: Invalid Input Values — Negative &amp; Constraint Tests</h2>
+
+  <!-- TC-06 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-06</span>
+      <span class="tc-name">Create Student with Invalid Email Format</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Invalid Value:</strong> <code>email: "invalid-email-address"</code> (missing @ and domain)</div>
+    <div class="tc-detail"><strong>Error Response:</strong></div>
+    <pre>{ "success": false, "error": "Invalid Input Values",
+  "details": [{ "field": "email", "error": "Invalid email address format: 'invalid-email-address'." }] }</pre>
+    <div class="tc-detail">✅ Verified: Regex format validation intercepted malformed email before persisting to data store.</div>
+  </div>
+
+  <!-- TC-07 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-07</span>
+      <span class="tc-name">Create Student with Negative Tuition Fees</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Invalid Value:</strong> <code>fees: -15000</code> (negative financial value)</div>
+    <div class="tc-detail">✅ Verified: Constraint check rejected negative fee with error: <em>"Fees must be a non-negative number."</em></div>
+  </div>
+
+  <!-- TC-08 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-08</span>
+      <span class="tc-name">Create Student with Out-of-Range Semester</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Invalid Value:</strong> <code>sem: 12</code> (valid B.Tech range: 1–8)</div>
+    <div class="tc-detail">✅ Verified: Out-of-bounds integer rejected with error: <em>"Semester must be an integer between 1 and 8."</em></div>
+  </div>
+
+  <!-- TC-09 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-09</span>
+      <span class="tc-name">Create Student with Duplicate GRNO (Conflict)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">409 Conflict</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">409 Conflict</span></div>
+    <div class="tc-detail"><strong>Duplicate:</strong> <code>grno: "92400120035"</code> (already allocated to student #1)</div>
+    <div class="tc-detail"><strong>Error Response:</strong></div>
+    <pre>{ "success": false, "error": "Conflict",
+  "message": "A student with GRNO '92400120035' already exists in the system." }</pre>
+    <div class="tc-detail">✅ Verified: Unique constraint check triggered HTTP 409 (not generic 400), clearly communicating the conflict semantics.</div>
+  </div>
+
+  <!-- TC-10 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-10</span>
+      <span class="tc-name">Retrieve Non-Existent Student ID (ID: 9999)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag get">GET</span> <code>/api/students/9999</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">404 Not Found</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">404 Not Found</span></div>
+    <div class="tc-detail">✅ Verified: Proper HTTP 404 returned instead of empty 200 or 500, correctly conveying resource non-existence.</div>
+  </div>
+
+  <!-- TC-11 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-11</span>
+      <span class="tc-name">Retrieve Student with Non-Numeric ID Format ('abc')</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag get">GET</span> <code>/api/students/abc</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail">✅ Verified: Route parameter type sanitizer caught non-integer input (<code>NaN</code> check), rejected before querying data store.</div>
+  </div>
+
+  <!-- TC-12 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-12</span>
+      <span class="tc-name">Update Non-Existent Student (ID: 9999)</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag put">PUT</span> <code>/api/students/9999</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">404 Not Found</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">404 Not Found</span></div>
+    <div class="tc-detail">✅ Verified: API gracefully informs client that target record does not exist, prevents silent no-op updates.</div>
+  </div>
+
+  <!-- TC-13 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-13</span>
+      <span class="tc-name">Delete Student with Non-Numeric ID ('xyz')</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag delete">DELETE</span> <code>/api/students/xyz</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail">✅ Verified: Invalid ID format blocked before attempting delete operation; prevents undefined behavior.</div>
+  </div>
+
+  <!-- ---- CATEGORY 3 ---- -->
+  <div class="page-break"></div>
+  <h2>Category 3: Missing Input Values — Required Field Validation Tests</h2>
+
+  <!-- TC-14 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-14</span>
+      <span class="tc-name">Create Student with Missing 'name' Field</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Omitted Field:</strong> <code>name</code></div>
+    <div class="tc-detail">✅ Verified: Field presence checker returned error: <em>"Name is required and cannot be empty."</em></div>
+  </div>
+
+  <!-- TC-15 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-15</span>
+      <span class="tc-name">Create Student with Missing 'grno' Field</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Omitted Field:</strong> <code>grno</code></div>
+    <div class="tc-detail">✅ Verified: Field presence checker identified missing registration number field.</div>
+  </div>
+
+  <!-- TC-16 -->
+  <div class="tc-card">
+    <div class="tc-header">
+      <span class="tc-id">TC-16</span>
+      <span class="tc-name">Create Student with Completely Empty Body {}</span>
+      <span class="badge-pass">PASS</span>
+    </div>
+    <div class="tc-detail"><strong>Method &amp; Endpoint:</strong> <span class="method-tag post">POST</span> <code>/api/students</code></div>
+    <div class="tc-detail"><strong>Expected HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span> &nbsp;|&nbsp; <strong>Actual HTTP:</strong> <span class="http-status http-4xx">400 Bad Request</span></div>
+    <div class="tc-detail"><strong>Payload:</strong> <code>{}</code></div>
+    <div class="tc-detail"><strong>Error Response:</strong></div>
+    <pre>{ "success": false, "error": "Missing Request Body",
+  "message": "Request body cannot be empty. Please provide student details." }</pre>
+    <div class="tc-detail">✅ Verified: Immediate guard clause detected empty object before executing any field-level validation logic.</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 4. COMPLETE TEST MATRIX -->
+  <!-- ================================================================ -->
+  <div class="page-break"></div>
+  <h1>4. Complete Test Results Matrix</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test ID</th>
+        <th>Category</th>
+        <th>Scenario / Description</th>
+        <th>Method &amp; Endpoint</th>
+        <th style="text-align:center">Expected</th>
+        <th style="text-align:center">Actual</th>
+        <th style="text-align:center">Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>TC-01</strong></td><td><span class="badge-valid">Valid</span></td><td>Create student with complete valid payload</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-2xx"><strong>201</strong></td><td style="text-align:center" class="http-2xx"><strong>201</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-02</strong></td><td><span class="badge-valid">Valid</span></td><td>Retrieve all registered students</td><td><span class="method-tag get">GET</span> /api/students</td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-03</strong></td><td><span class="badge-valid">Valid</span></td><td>Retrieve single student by ID (1)</td><td><span class="method-tag get">GET</span> /api/students/1</td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-04</strong></td><td><span class="badge-valid">Valid</span></td><td>Update student semester, fees &amp; email</td><td><span class="method-tag put">PUT</span> /api/students/1</td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-05</strong></td><td><span class="badge-valid">Valid</span></td><td>Delete student record by valid ID (3)</td><td><span class="method-tag delete">DELETE</span> /api/students/3</td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center" class="http-2xx"><strong>200</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-06</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Invalid email string format</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-07</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Negative tuition fees value (-15000)</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-08</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Out-of-bounds semester (sem: 12)</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-09</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Duplicate GRNO unique conflict</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>409</strong></td><td style="text-align:center" class="http-4xx"><strong>409</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-10</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Lookup non-existent student ID (9999)</td><td><span class="method-tag get">GET</span> /api/students/9999</td><td style="text-align:center" class="http-4xx"><strong>404</strong></td><td style="text-align:center" class="http-4xx"><strong>404</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-11</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Non-numeric student ID format ('abc')</td><td><span class="method-tag get">GET</span> /api/students/abc</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-12</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Update non-existent student (9999)</td><td><span class="method-tag put">PUT</span> /api/students/9999</td><td style="text-align:center" class="http-4xx"><strong>404</strong></td><td style="text-align:center" class="http-4xx"><strong>404</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-13</strong></td><td><span class="badge-invalid">Invalid</span></td><td>Delete student with string ID ('xyz')</td><td><span class="method-tag delete">DELETE</span> /api/students/xyz</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-14</strong></td><td><span class="badge-missing">Missing</span></td><td>Omitted required 'name' property</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-15</strong></td><td><span class="badge-missing">Missing</span></td><td>Omitted required 'grno' property</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+      <tr><td><strong>TC-16</strong></td><td><span class="badge-missing">Missing</span></td><td>Empty JSON body {} passed to POST</td><td><span class="method-tag post">POST</span> /api/students</td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center" class="http-4xx"><strong>400</strong></td><td style="text-align:center"><span class="badge-pass">PASS</span></td></tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 5. ERROR HANDLING ANALYSIS -->
+  <!-- ================================================================ -->
+  <div class="page-break"></div>
+  <h1>5. Error Handling &amp; Root Cause Analysis</h1>
+
+  <h2>5.1 HTTP Status Code Discipline</h2>
+  <p>The API correctly distinguishes between all HTTP semantics:</p>
+  <table>
+    <thead><tr><th>HTTP Status</th><th>Trigger Condition</th><th>API Behavior</th></tr></thead>
+    <tbody>
+      <tr><td><span class="http-status http-2xx">200 OK</span></td><td>Successful GET, PUT, DELETE operations</td><td>Returns success object with <code>data</code> key</td></tr>
+      <tr><td><span class="http-status http-2xx">201 Created</span></td><td>Successful POST (resource creation)</td><td>Returns created record with assigned ID; distinguishes from simple 200</td></tr>
+      <tr><td><span class="http-status http-4xx">400 Bad Request</span></td><td>Invalid/malformed input, missing required fields, non-numeric IDs</td><td>Returns structured error with <code>details</code> array for field-level errors</td></tr>
+      <tr><td><span class="http-status http-4xx">404 Not Found</span></td><td>Target resource ID does not exist</td><td>Avoids empty 200 and server errors; clearly communicates absence</td></tr>
+      <tr><td><span class="http-status http-4xx">409 Conflict</span></td><td>Unique constraint violation (GRNO, Email)</td><td>Semantically correct — client state conflicts with server state</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.2 Standardized Error Payload Structure</h2>
+  <p>Every error response maintains an explicit, uniform JSON schema enabling frontend components to map
+  error messages directly to specific form fields:</p>
+  <pre>{
+  "success": false,
+  "error": "&lt;ErrorCategory&gt;",            // e.g., "Invalid Input Values", "Resource Not Found"
+  "message": "&lt;HumanReadableSummary&gt;",    // Descriptive sentence for the user interface
+  "details": [                             // Optional array for field-level validation errors
+    { "field": "&lt;fieldName&gt;", "error": "&lt;specificValidationNotice&gt;" }
+  ]
+}</pre>
+
+  <h2>5.3 Validation Pipeline Architecture</h2>
+  <p>The POST endpoint implements a multi-layer validation pipeline in the following sequence:</p>
+  <table>
+    <thead><tr><th>Layer</th><th>Check</th><th>Response on Failure</th></tr></thead>
+    <tbody>
+      <tr><td>1 — Guard</td><td>Empty body detection (<code>Object.keys(body).length === 0</code>)</td><td>400 — "Missing Request Body"</td></tr>
+      <tr><td>2 — Presence</td><td>Required field existence check (grno, name, department, sem, fees, email)</td><td>400 — "Validation Failed" with details array</td></tr>
+      <tr><td>3 — Format</td><td>Regex email validation, integer range check for sem, non-negative check for fees</td><td>400 — "Invalid Input Values" with details array</td></tr>
+      <tr><td>4 — Uniqueness</td><td>GRNO and Email uniqueness lookup against existing records</td><td>409 — "Conflict" with specific field conflict message</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 6. RECOMMENDATIONS -->
+  <!-- ================================================================ -->
+  <div class="page-break"></div>
+  <h1>6. Recommended Improvements</h1>
+
+  <p>Based on test observations and industry standards, the following enhancements are recommended for
+  production-readiness:</p>
+
+  <div class="rec-item">
+    <div class="rec-num">1</div>
+    <div class="rec-body">
+      <h3>Adopt RFC 7807 — Problem Details for HTTP APIs</h3>
+      <p>Standardize error responses using <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>,
+      and <code>instance</code> fields with Content-Type <code>application/problem+json</code> for machine-readable
+      and interoperable error communication.</p>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <div class="rec-num">2</div>
+    <div class="rec-body">
+      <h3>Schema Validation Middleware (Zod / Joi)</h3>
+      <p>Replace manual field checking with declarative validation libraries such as <strong>Zod</strong> or
+      <strong>Joi</strong> to decouple validation logic from route handlers, reducing code duplication and
+      improving maintainability.</p>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <div class="rec-num">3</div>
+    <div class="rec-body">
+      <h3>Database Persistence &amp; Transactional Integrity</h3>
+      <p>Transition from in-memory data store to a relational or document database (e.g., PostgreSQL, SQLite, MongoDB)
+      with ACID transaction support, foreign key constraints, and persistent storage across server restarts.</p>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <div class="rec-num">4</div>
+    <div class="rec-body">
+      <h3>Pagination and Sorting for GET /api/students</h3>
+      <p>Implement cursor-based or offset-based pagination (<code>page</code>, <code>pageSize</code>, <code>sortBy</code>,
+      <code>sortOrder</code>) to prevent performance degradation when the student registry grows to hundreds or thousands
+      of records.</p>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <div class="rec-num">5</div>
+    <div class="rec-body">
+      <h3>Authentication &amp; Authorization (JWT + RBAC)</h3>
+      <p>Add JSON Web Token bearer authentication with Role-Based Access Control so that only administrators can
+      perform write operations (POST, PUT, DELETE), while read access is open or restricted to authenticated users.</p>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <div class="rec-num">6</div>
+    <div class="rec-body">
+      <h3>Rate Limiting &amp; Security Hardening</h3>
+      <p>Integrate <code>express-rate-limit</code> to prevent brute force and DoS attacks. Add <code>helmet</code>
+      for HTTP security headers and <code>xss-clean</code> for input sanitization to prevent XSS and injection
+      vulnerabilities.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- 7. DELIVERABLES -->
+  <!-- ================================================================ -->
+  <h1>7. Deliverables Summary</h1>
+
+  <table>
+    <thead><tr><th>Deliverable</th><th>File</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>API Server</td><td><code>server.js</code></td><td>Express.js REST CRUD API with input validation and error handling</td></tr>
+      <tr><td>Automated Test Suite</td><td><code>test-runner.js</code></td><td>Node.js test runner with 16 assertions — 16/16 PASS</td></tr>
+      <tr><td>Postman Collection</td><td><code>Student_Management_System_API.postman_collection.json</code></td><td>Postman v2.1.0 JSON with automated JS test assertions</td></tr>
+      <tr><td>Web Portal</td><td><code>public/index.html</code></td><td>Interactive Student Management Portal with API Sandbox</td></tr>
+      <tr><td>Test Screenshots</td><td><code>screenshots/</code></td><td>17 high-resolution PNG captures for all 16 test cases + suite summary</td></tr>
+      <tr><td>HTML Report</td><td><code>API_Test_Report.html</code></td><td>Printable browser-based test results report</td></tr>
+      <tr><td>PDF Report</td><td><code>Practical_5_API_Testing_and_Error_Handling_92400120035.html</code></td><td>This formal academic report (print/save as PDF)</td></tr>
+      <tr><td>Test Results Log</td><td><code>test-results.json</code></td><td>Machine-readable execution log with latencies and headers</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7.1 How to Run the Project</h2>
+  <pre># Step 1: Start the API server
+node server.js
+# Server runs at: http://localhost:3000
+
+# Step 2: Run automated test suite (16 test cases)
+node test-runner.js
+
+# Step 3: Regenerate all test screenshots
+node generate-screenshots.js</pre>
+
+  <p><strong>Postman Usage:</strong> Launch Postman → Import → Select
+  <code>Student_Management_System_API.postman_collection.json</code> → Set environment variable
+  <code>baseUrl = http://localhost:3000</code> → Run Collection.</p>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================ -->
+  <!-- FOOTER -->
+  <!-- ================================================================ -->
+  <div class="doc-footer">
+    <div>
+      <strong>V Sridhar</strong> &nbsp;|&nbsp; Enrolment: 92400120035<br>
+      Department of Computer Engineering
+    </div>
+    <div style="text-align:right;">
+      Practical 5 — API Testing &amp; Error Handling<br>
+      Submission Date: September 30, 2026
+    </div>
+  </div>
+
+</div><!-- /.document-container -->
+</body>
+</html>

@@ -1,0 +1,571 @@
+{
+  "info": {
+    "_postman_id": "8c41d9a2-7b24-4f41-a1e6-b9cf2a912e77",
+    "name": "Student Management System - CRUD API Testing & Error Handling",
+    "description": "Comprehensive Postman test collection for Student Management System CRUD API covering:\n1. Valid Input Scenarios (Positive CRUD Flow)\n2. Invalid Input Scenarios (Format, Boundary, and Conflict Checks)\n3. Missing Input Scenarios (Required Field Validations)\nIncludes automated pm.test assertions for HTTP status codes, response schemas, and error message validation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "studentId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Valid Input (Positive CRUD Tests)",
+      "description": "Happy path testing with well-formed, complete, and valid parameters.",
+      "item": [
+        {
+          "name": "POST - Create Student (Valid Input)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is below 500ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "pm.test(\"Response returns success: true and data object\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.true;",
+                  "    pm.expect(res.data).to.be.an('object');",
+                  "    pm.expect(res.data.grno).to.eql(\"92400120999\");",
+                  "    pm.expect(res.data.name).to.eql(\"Rohit Sharma\");",
+                  "    pm.expect(res.data.department).to.eql(\"Computer Engineering\");",
+                  "    pm.expect(res.data.sem).to.eql(6);",
+                  "    pm.expect(res.data.fees).to.eql(52000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120999\",\n  \"name\": \"Rohit Sharma\",\n  \"department\": \"Computer Engineering\",\n  \"sem\": 6,\n  \"fees\": 52000,\n  \"isScholarship\": false,\n  \"email\": \"rohit.sharma@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "GET - All Students",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify students list schema and count\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.true;",
+                  "    pm.expect(res.data).to.be.an('array');",
+                  "    pm.expect(res.count).to.be.at.least(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "GET - Single Student by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify student ID and record integrity\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.true;",
+                  "    pm.expect(res.data.id).to.eql(1);",
+                  "    pm.expect(res.data).to.have.property('name');",
+                  "    pm.expect(res.data).to.have.property('email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/students/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students", "1"]
+            }
+          }
+        },
+        {
+          "name": "PUT - Update Student by ID (Valid Input)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify update confirmation message and data\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.true;",
+                  "    pm.expect(res.data.sem).to.eql(6);",
+                  "    pm.expect(res.data.fees).to.eql(40000);",
+                  "    pm.expect(res.data.email).to.eql(\"sridhar.updated@example.com\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sem\": 6,\n  \"fees\": 40000,\n  \"email\": \"sridhar.updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE - Delete Student by ID (Valid Input)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify deletion response\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.true;",
+                  "    pm.expect(res.message).to.include('deleted successfully');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/students/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students", "3"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Invalid Input (Negative & Constraint Tests)",
+      "description": "Tests handling of malformed formats, range violations, and non-existent IDs.",
+      "item": [
+        {
+          "name": "POST - Invalid Email Format (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify error payload specifies email validation\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.eql(\"Invalid Input Values\");",
+                  "    pm.expect(res.details.some(d => d.field === 'email')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120888\",\n  \"name\": \"Ananya Roy\",\n  \"department\": \"Mechanical Engineering\",\n  \"sem\": 4,\n  \"fees\": 45000,\n  \"isScholarship\": false,\n  \"email\": \"invalid-email-address\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "POST - Negative Fees Value (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify error payload flags negative fees\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.details.some(d => d.field === 'fees')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120777\",\n  \"name\": \"Sneha Rao\",\n  \"department\": \"Civil Engineering\",\n  \"sem\": 3,\n  \"fees\": -15000,\n  \"isScholarship\": false,\n  \"email\": \"sneha.rao@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "POST - Out of Range Semester (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify error payload flags sem out of bounds\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.details.some(d => d.field === 'sem')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120666\",\n  \"name\": \"Rahul Verma\",\n  \"department\": \"Electrical Engineering\",\n  \"sem\": 12,\n  \"fees\": 48000,\n  \"isScholarship\": false,\n  \"email\": \"rahul.verma@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "POST - Duplicate GRNO Conflict (Expect 409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 409 Conflict\", function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify duplicate conflict error message\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.eql(\"Conflict\");",
+                  "    pm.expect(res.message).to.include(\"already exists\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120035\",\n  \"name\": \"Duplicate User\",\n  \"department\": \"Computer Engineering\",\n  \"sem\": 5,\n  \"fees\": 50000,\n  \"isScholarship\": false,\n  \"email\": \"duplicate.user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "GET - Non-Existent Student ID (Expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify not found error message\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.eql(\"Resource Not Found\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/students/9999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students", "9999"]
+            }
+          }
+        },
+        {
+          "name": "GET - Non-Numeric ID Format (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify invalid ID format error message\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.eql(\"Invalid ID format\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/students/abc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students", "abc"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Missing Input (Field Validation Tests)",
+      "description": "Tests handling when required attributes or entire payload are omitted.",
+      "item": [
+        {
+          "name": "POST - Missing Name Field (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify missing name error detail\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.details.some(d => d.field === 'name')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grno\": \"92400120555\",\n  \"department\": \"Information Technology\",\n  \"sem\": 3,\n  \"fees\": 45000,\n  \"email\": \"noname@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "POST - Missing GRNO Field (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify missing grno error detail\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.details.some(d => d.field === 'grno')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pooja Mehta\",\n  \"department\": \"Computer Engineering\",\n  \"sem\": 2,\n  \"fees\": 42000,\n  \"email\": \"pooja.mehta@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        },
+        {
+          "name": "POST - Empty Request Body (Expect 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify empty body error message\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.success).to.be.false;",
+                  "    pm.expect(res.error).to.eql(\"Missing Request Body\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "students"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

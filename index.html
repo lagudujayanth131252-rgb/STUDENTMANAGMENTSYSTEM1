@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System - Portal & API Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="brand-text">
+        <span class="brand-title">EduPortal</span>
+        <span class="brand-subtitle">Student Management System</span>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="switchTab('directory')">
+        <i class="fa-solid fa-users"></i> Students Directory
+      </button>
+      <button class="nav-btn" onclick="switchTab('sandbox')">
+        <i class="fa-solid fa-vial-circle-check"></i> API Testing Sandbox
+      </button>
+      <button class="nav-btn" onclick="switchTab('report')">
+        <i class="fa-solid fa-file-contract"></i> Practical 5 Report
+      </button>
+    </nav>
+
+    <div class="nav-actions">
+      <span class="api-status-badge" id="apiStatusBadge">
+        <span class="status-dot online"></span> API Online
+      </span>
+      <button class="btn btn-primary" onclick="openAddStudentModal()">
+        <i class="fa-solid fa-plus"></i> New Student
+      </button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- STATS OVERVIEW -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon icon-blue"><i class="fa-solid fa-user-graduate"></i></div>
+        <div class="stat-details">
+          <span class="stat-label">Total Students</span>
+          <span class="stat-value" id="statTotalStudents">0</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+        <div class="stat-details">
+          <span class="stat-label">Total Fees Collected</span>
+          <span class="stat-value" id="statTotalFees">&#8377;0</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-purple"><i class="fa-solid fa-award"></i></div>
+        <div class="stat-details">
+          <span class="stat-label">Scholarship Holders</span>
+          <span class="stat-value" id="statScholarships">0</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-orange"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="stat-details">
+          <span class="stat-label">Departments</span>
+          <span class="stat-value" id="statDepartments">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: STUDENTS DIRECTORY -->
+    <section id="tab-directory" class="tab-section active">
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search by name, GRNO, or email..." oninput="handleSearch()">
+          </div>
+
+          <div class="filters-group">
+            <select id="filterDepartment" onchange="handleFilter()">
+              <option value="">All Departments</option>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+            </select>
+
+            <select id="filterSem" onchange="handleFilter()">
+              <option value="">All Semesters</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+
+            <button class="btn btn-secondary" onclick="refreshStudentList()" title="Refresh">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="studentsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>GRNO</th>
+                <th>Student Name</th>
+                <th>Department</th>
+                <th>Semester</th>
+                <th>Tuition Fees</th>
+                <th>Scholarship</th>
+                <th>Email Address</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer" id="tableFooter">
+          <span>Showing <strong id="visibleCount">0</strong> students</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: LIVE API TESTING & ERROR HANDLING SANDBOX (Practical 5 Demo) -->
+    <section id="tab-sandbox" class="tab-section">
+      <div class="sandbox-grid">
+        <!-- Scenarios Left Panel -->
+        <div class="card sandbox-sidebar">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-flask"></i> Test Cases Selector</h3>
+            <span class="badge-tag">Practical 5</span>
+          </div>
+
+          <div class="scenario-category">Valid Input Tests (Positive Flow)</div>
+          <button class="scenario-btn active" onclick="loadScenario('valid_post')">
+            <span class="method-tag post">POST</span> Create Student (Valid Data)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('valid_get_all')">
+            <span class="method-tag get">GET</span> Retrieve All Students
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('valid_get_one')">
+            <span class="method-tag get">GET</span> Retrieve Student by ID (1)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('valid_put')">
+            <span class="method-tag put">PUT</span> Update Student Details
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('valid_delete')">
+            <span class="method-tag delete">DELETE</span> Delete Student by ID
+          </button>
+
+          <div class="scenario-category">Invalid Input Tests (Negative Flow)</div>
+          <button class="scenario-btn" onclick="loadScenario('invalid_email')">
+            <span class="method-tag post">POST</span> Malformed Email Format (400)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('invalid_fees')">
+            <span class="method-tag post">POST</span> Negative Fees Value (400)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('invalid_sem')">
+            <span class="method-tag post">POST</span> Semester Out of Range (400)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('duplicate_grno')">
+            <span class="method-tag post">POST</span> Duplicate GRNO Conflict (409)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('not_found_id')">
+            <span class="method-tag get">GET</span> Non-Existent ID (404)
+          </button>
+
+          <div class="scenario-category">Missing Input Tests (Validation Flow)</div>
+          <button class="scenario-btn" onclick="loadScenario('missing_name')">
+            <span class="method-tag post">POST</span> Missing Name Field (400)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('missing_grno')">
+            <span class="method-tag post">POST</span> Missing GRNO Field (400)
+          </button>
+          <button class="scenario-btn" onclick="loadScenario('empty_body')">
+            <span class="method-tag post">POST</span> Empty Payload {} (400)
+          </button>
+        </div>
+
+        <!-- Request & Live Execution Right Panel -->
+        <div class="card sandbox-console">
+          <div class="card-header">
+            <div>
+              <h3 id="sandboxTitle">POST - Create Student (Valid Data)</h3>
+              <p class="text-muted" id="sandboxDesc">Submits a complete and valid student registration payload.</p>
+            </div>
+            <button class="btn btn-primary" id="btnExecuteSandbox" onclick="executeSandboxRequest()">
+              <i class="fa-solid fa-play"></i> Send Request
+            </button>
+          </div>
+
+          <div class="url-input-group">
+            <select id="sandboxMethod" class="method-select">
+              <option value="POST">POST</option>
+              <option value="GET">GET</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+            <input type="text" id="sandboxUrl" class="url-input" value="http://localhost:3000/api/students">
+          </div>
+
+          <div class="console-body-grid">
+            <div class="payload-box">
+              <div class="box-label">Request Body (JSON)</div>
+              <textarea id="sandboxPayload" spellcheck="false"></textarea>
+            </div>
+
+            <div class="response-box">
+              <div class="box-label-row">
+                <span class="box-label">Response Data & Status</span>
+                <div class="response-meta" id="responseMeta">
+                  <span class="status-pill status-ready">Ready to Send</span>
+                </div>
+              </div>
+              <pre id="sandboxResponse" class="response-viewer">// Click "Send Request" to execute against the API</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: REPORT & DELIVERABLES -->
+    <section id="tab-report" class="tab-section">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3>Practical 5: API Testing and Error Handling</h3>
+            <p class="text-muted">Faculty of Engineering and Technology | Department of Computer Engineering</p>
+          </div>
+          <div class="report-actions">
+            <a href="Practical_5_API_Testing_and_Error_Handling_92400120035.html" target="_blank" class="btn btn-secondary">
+              <i class="fa-solid fa-file-contract"></i> Open Academic Report (PDF)
+            </a>
+            <a href="Student_Management_System_API.postman_collection.json" download class="btn btn-primary">
+              <i class="fa-solid fa-download"></i> Download Postman Collection
+            </a>
+          </div>
+        </div>
+
+        <div class="report-content">
+          <div class="alert alert-info">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              <strong>Practical 5 Objective Completed:</strong> CRUD API tested with valid, invalid, and missing input values. Status codes (200, 201, 400, 404, 409), error messages, and response schemas successfully validated.
+            </div>
+          </div>
+
+          <div class="deliverables-grid">
+            <div class="deliv-card">
+              <i class="fa-solid fa-cube deliv-icon"></i>
+              <h4>Postman Collection</h4>
+              <p>Standard Collection v2.1.0 with automated JavaScript test assertions for every endpoint.</p>
+              <a href="Student_Management_System_API.postman_collection.json" download class="deliv-link">Download Collection JSON &rarr;</a>
+            </div>
+            <div class="deliv-card">
+              <i class="fa-solid fa-image deliv-icon"></i>
+              <h4>Test Screenshots</h4>
+              <p>11 authentic test execution screen captures verifying response status codes and assertions.</p>
+              <a href="screenshots/API_Test_Execution_Summary.png" target="_blank" class="deliv-link">View Suite Summary Screenshot &rarr;</a>
+            </div>
+            <div class="deliv-card">
+              <i class="fa-solid fa-file-lines deliv-icon"></i>
+              <h4>API Test Report</h4>
+              <p>Formal academic documentation including cover page, all 16 test cases, error handling analysis, and recommendations.</p>
+              <a href="Practical_5_API_Testing_and_Error_Handling_92400120035.html" target="_blank" class="deliv-link">View Academic Report &rarr;</a>
+            </div>
+          </div>
+
+          <div style="margin-top: 25px;">
+            <h4>Automated Test Suite Summary (16/16 Passed)</h4>
+            <div class="screenshot-preview">
+              <img src="screenshots/API_Test_Execution_Summary.png" alt="Test Execution Summary" style="width:100%; border-radius: 6px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ADD / EDIT STUDENT MODAL -->
+  <div class="modal-overlay" id="studentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Student</h3>
+        <button class="modal-close" onclick="closeStudentModal()">&times;</button>
+      </div>
+
+      <form id="studentForm" onsubmit="handleStudentFormSubmit(event)">
+        <input type="hidden" id="studentId">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="grno">GRNO <span class="required">*</span></label>
+            <input type="text" id="grno" required placeholder="e.g. 92400120035">
+            <span class="field-error" id="err-grno"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Student Name <span class="required">*</span></label>
+            <input type="text" id="name" required placeholder="e.g. V Sridhar">
+            <span class="field-error" id="err-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="department">Department <span class="required">*</span></label>
+            <select id="department" required>
+              <option value="">Select Department</option>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+            </select>
+            <span class="field-error" id="err-department"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="sem">Semester (1 - 8) <span class="required">*</span></label>
+            <input type="number" id="sem" min="1" max="8" required placeholder="5">
+            <span class="field-error" id="err-sem"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="fees">Tuition Fees (&#8377;) <span class="required">*</span></label>
+            <input type="number" id="fees" min="0" required placeholder="45000">
+            <span class="field-error" id="err-fees"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" required placeholder="student@example.com">
+            <span class="field-error" id="err-email"></span>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" id="isScholarship"> Eligible for Scholarship (10% Discount)
+          </label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeStudentModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitModal">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

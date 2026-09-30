@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practical 5 - API Testing and Error Handling Report</title>
+  <style>
+    @media print {
+      body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .no-print { display: none; }
+      .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #24292e;
+      background-color: #f6f8fa;
+      padding: 30px;
+      margin: 0;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border: 1px solid #e1e4e8;
+    }
+    .header {
+      border-bottom: 3px solid #0366d6;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    h1 { margin: 0 0 10px 0; color: #0366d6; font-size: 26px; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      font-size: 14px;
+      margin-top: 15px;
+      background: #f1f8ff;
+      padding: 14px 18px;
+      border-radius: 6px;
+      border-left: 4px solid #0366d6;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin: 25px 0;
+    }
+    .stat-card {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-val { font-size: 24px; font-weight: bold; color: #28a745; }
+    .stat-lbl { font-size: 12px; color: #586069; text-transform: uppercase; margin-top: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #e1e4e8;
+      padding: 9px 12px;
+      text-align: left;
+    }
+    th {
+      background: #f6f8fa;
+      font-weight: 600;
+      color: #24292e;
+    }
+    .badge-pass { background: #28a745; color: white; padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+    .img-box {
+      margin: 20px 0;
+      border: 1px solid #d1d5da;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .img-box img { width: 100%; display: block; }
+    .img-caption { background: #f6f8fa; padding: 8px 14px; font-size: 13px; font-weight: 600; color: #444; border-bottom: 1px solid #e1e4e8; }
+    .section-title { font-size: 19px; color: #1b1f23; border-bottom: 1px solid #e1e4e8; padding-bottom: 6px; margin: 30px 0 15px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Practical 5: API Testing and Error Handling Report</h1>
+      <p style="margin:0; color:#586069;">Student Management System CRUD API Verification & Validation</p>
+      <div class="meta-grid">
+        <div><strong>Course / Practical:</strong> Practical 5 (API Testing & Error Handling)</div>
+        <div><strong>Student Name:</strong> V Sridhar</div>
+        <div><strong>Enrolment Number:</strong> 92400120035</div>
+        <div><strong>Test Result:</strong> <span style="color:#28a745; font-weight:bold;">16 / 16 PASSED (100%)</span></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val" style="color:#0366d6;">16</div>
+        <div class="stat-lbl">Total Test Cases</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">16</div>
+        <div class="stat-lbl">Passed Tests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:#d73a49;">0</div>
+        <div class="stat-lbl">Failed Tests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">100%</div>
+        <div class="stat-lbl">Success Rate</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">1. Test Suite Execution Overview</h2>
+    <div class="img-box">
+      <div class="img-caption">Figure 1: Automated Test Suite Execution Summary (16 / 16 Passed)</div>
+      <img src="screenshots/API_Test_Execution_Summary.png" alt="Test Execution Summary">
+    </div>
+
+    <h2 class="section-title">2. Test Cases Execution Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Test ID</th>
+          <th>Category</th>
+          <th>Test Scenario</th>
+          <th>Method & Endpoint</th>
+          <th>Status</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>TC-01</strong></td><td>Valid Input</td><td>Create Student with valid data</td><td><code>POST /api/students</code></td><td>201 Created</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-02</strong></td><td>Valid Input</td><td>Retrieve all students</td><td><code>GET /api/students</code></td><td>200 OK</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-03</strong></td><td>Valid Input</td><td>Retrieve student by ID (1)</td><td><code>GET /api/students/1</code></td><td>200 OK</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-04</strong></td><td>Valid Input</td><td>Update student sem, fees, email</td><td><code>PUT /api/students/1</code></td><td>200 OK</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-05</strong></td><td>Valid Input</td><td>Delete student by valid ID (3)</td><td><code>DELETE /api/students/3</code></td><td>200 OK</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-06</strong></td><td>Invalid Input</td><td>Invalid email format</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-07</strong></td><td>Invalid Input</td><td>Negative fees value (-15000)</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-08</strong></td><td>Invalid Input</td><td>Semester out of range (sem: 12)</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-09</strong></td><td>Invalid Input</td><td>Duplicate GRNO conflict</td><td><code>POST /api/students</code></td><td>409 Conflict</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-10</strong></td><td>Invalid Input</td><td>Non-existent student ID (9999)</td><td><code>GET /api/students/9999</code></td><td>404 Not Found</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-11</strong></td><td>Invalid Input</td><td>Non-numeric student ID (abc)</td><td><code>GET /api/students/abc</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-12</strong></td><td>Invalid Input</td><td>Update non-existent student (9999)</td><td><code>PUT /api/students/9999</code></td><td>404 Not Found</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-13</strong></td><td>Invalid Input</td><td>Delete non-numeric student ID (xyz)</td><td><code>DELETE /api/students/xyz</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-14</strong></td><td>Missing Input</td><td>Missing required name field</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-15</strong></td><td>Missing Input</td><td>Missing required GRNO field</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+        <tr><td><strong>TC-16</strong></td><td>Missing Input</td><td>Completely empty body ({})</td><td><code>POST /api/students</code></td><td>400 Bad Request</td><td><span class="badge-pass">PASS</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2 class="section-title">3. Sample Test Case Screenshots</h2>
+    <div class="img-box">
+      <div class="img-caption">Figure 2: TC-01 Create Student (Valid Input - 201 Created)</div>
+      <img src="screenshots/TC01_Create_Student_Valid.png" alt="TC-01">
+    </div>
+
+    <div class="img-box">
+      <div class="img-caption">Figure 3: TC-06 Create Student with Invalid Email Format (400 Bad Request)</div>
+      <img src="screenshots/TC06_Invalid_Email_Format.png" alt="TC-06">
+    </div>
+
+    <div class="img-box">
+      <div class="img-caption">Figure 4: TC-09 Duplicate GRNO Collision (409 Conflict)</div>
+      <img src="screenshots/TC09_Duplicate_GRNO_Conflict.png" alt="TC-09">
+    </div>
+
+    <div class="img-box">
+      <div class="img-caption">Figure 5: TC-14 Create Student with Missing Name Field (400 Bad Request)</div>
+      <img src="screenshots/TC14_Missing_Name_Field.png" alt="TC-14">
+    </div>
+
+    <h2 class="section-title">4. Error Analysis & Recommendations</h2>
+    <p><strong>1. Error Analysis:</strong> The API handles validation errors by returning standard 400 Bad Request responses containing explicit field-level breakdown arrays. Resource absence correctly signals 404 Not Found, and state conflicts (duplicate GRNO/Email) trigger 409 Conflict.</p>
+    <p><strong>2. Recommendations for Improvement:</strong></p>
+    <ul>
+      <li>Implement <strong>RFC 7807 Problem Details</strong> for standardized HTTP error formatting.</li>
+      <li>Integrate declarative schema validation middleware like <strong>Zod</strong> or <strong>Joi</strong>.</li>
+      <li>Incorporate <strong>JWT Authentication & RBAC</strong> for secure endpoint mutations.</li>
+      <li>Add <strong>Pagination and Query Filtering</strong> to the <code>GET /api/students</code> endpoint.</li>
+    </ul>
+  </div>
+</body>
+</html>

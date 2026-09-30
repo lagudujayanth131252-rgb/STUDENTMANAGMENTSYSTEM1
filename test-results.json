@@ -1,0 +1,666 @@
+[
+  {
+    "id": "TC-01",
+    "category": "Valid Input",
+    "name": "Create New Student with Valid Data",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120999",
+      "name": "Rohit Sharma",
+      "department": "Computer Engineering",
+      "sem": 6,
+      "fees": 52000,
+      "isScholarship": false,
+      "email": "rohit.sharma@example.com"
+    },
+    "expectedStatus": 201,
+    "actualStatus": 201,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 456,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "233",
+      "etag": "W/\"e9-lugDxkpGW+dILkLS+sA5DezBm4w\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": true,
+      "message": "Student registered successfully",
+      "data": {
+        "id": 4,
+        "grno": "92400120999",
+        "name": "Rohit Sharma",
+        "department": "Computer Engineering",
+        "sem": 6,
+        "fees": 52000,
+        "isScholarship": false,
+        "email": "rohit.sharma@example.com"
+      }
+    }
+  },
+  {
+    "id": "TC-02",
+    "category": "Valid Input",
+    "name": "Retrieve All Students List",
+    "method": "GET",
+    "path": "/api/students",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 200,
+    "actualStatus": 200,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 5,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "680",
+      "etag": "W/\"2a8-huepKb1oXKhkK0q+0K3E30ITJpU\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": true,
+      "count": 4,
+      "data": [
+        {
+          "id": 1,
+          "grno": "92400120035",
+          "name": "V Sridhar",
+          "department": "Computer Engineering",
+          "sem": 5,
+          "fees": 45000,
+          "isScholarship": true,
+          "email": "sridhar@example.com"
+        },
+        {
+          "id": 2,
+          "grno": "92400120619",
+          "name": "Darshan N",
+          "department": "Computer Engineering",
+          "sem": 5,
+          "fees": 50000,
+          "isScholarship": false,
+          "email": "darshan@example.com"
+        },
+        {
+          "id": 3,
+          "grno": "92400120015",
+          "name": "Amit Patel",
+          "department": "Information Technology",
+          "sem": 4,
+          "fees": 48000,
+          "isScholarship": false,
+          "email": "amit.patel@example.com"
+        },
+        {
+          "id": 4,
+          "grno": "92400120999",
+          "name": "Rohit Sharma",
+          "department": "Computer Engineering",
+          "sem": 6,
+          "fees": 52000,
+          "isScholarship": false,
+          "email": "rohit.sharma@example.com"
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-03",
+    "category": "Valid Input",
+    "name": "Retrieve Single Student by Valid ID (ID: 1)",
+    "method": "GET",
+    "path": "/api/students/1",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 200,
+    "actualStatus": 200,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "180",
+      "etag": "W/\"b4-JCkohzxHsM8RY5BR2eFQU659zLQ\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": true,
+      "data": {
+        "id": 1,
+        "grno": "92400120035",
+        "name": "V Sridhar",
+        "department": "Computer Engineering",
+        "sem": 5,
+        "fees": 45000,
+        "isScholarship": true,
+        "email": "sridhar@example.com"
+      }
+    }
+  },
+  {
+    "id": "TC-04",
+    "category": "Valid Input",
+    "name": "Update Existing Student with Valid Details (ID: 1)",
+    "method": "PUT",
+    "path": "/api/students/1",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "sem": 6,
+      "fees": 40000,
+      "email": "sridhar.updated@example.com"
+    },
+    "expectedStatus": 200,
+    "actualStatus": 200,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 2,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "239",
+      "etag": "W/\"ef-Qg02knlP+a18LDsOdMto0qjPC9U\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": true,
+      "message": "Student with ID 1 updated successfully",
+      "data": {
+        "id": 1,
+        "grno": "92400120035",
+        "name": "V Sridhar",
+        "department": "Computer Engineering",
+        "sem": 6,
+        "fees": 40000,
+        "isScholarship": true,
+        "email": "sridhar.updated@example.com"
+      }
+    }
+  },
+  {
+    "id": "TC-05",
+    "category": "Valid Input",
+    "name": "Delete Existing Student by Valid ID (ID: 3)",
+    "method": "DELETE",
+    "path": "/api/students/3",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 200,
+    "actualStatus": 200,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "238",
+      "etag": "W/\"ee-+f4J/yI1QOynMUsp/eSH503O5qA\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": true,
+      "message": "Student with ID 3 deleted successfully",
+      "data": {
+        "id": 3,
+        "grno": "92400120015",
+        "name": "Amit Patel",
+        "department": "Information Technology",
+        "sem": 4,
+        "fees": 48000,
+        "isScholarship": false,
+        "email": "amit.patel@example.com"
+      }
+    }
+  },
+  {
+    "id": "TC-06",
+    "category": "Invalid Input",
+    "name": "Create Student with Invalid Email Format",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120888",
+      "name": "Ananya Roy",
+      "department": "Mechanical Engineering",
+      "sem": 4,
+      "fees": 45000,
+      "isScholarship": false,
+      "email": "invalid-email-address"
+    },
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "198",
+      "etag": "W/\"c6-BF8X3QJcczXlka/y3L7eB9Y8ucM\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Invalid Input Values",
+      "message": "One or more fields contain invalid values.",
+      "details": [
+        {
+          "field": "email",
+          "error": "Invalid email address format: 'invalid-email-address'."
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-07",
+    "category": "Invalid Input",
+    "name": "Create Student with Negative Fees Value",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120777",
+      "name": "Sneha Rao",
+      "department": "Civil Engineering",
+      "sem": 3,
+      "fees": -15000,
+      "isScholarship": false,
+      "email": "sneha.rao@example.com"
+    },
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "178",
+      "etag": "W/\"b2-3vK/e//PxPWwD2NdbIh42sIMerg\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Invalid Input Values",
+      "message": "One or more fields contain invalid values.",
+      "details": [
+        {
+          "field": "fees",
+          "error": "Fees must be a non-negative number."
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-08",
+    "category": "Invalid Input",
+    "name": "Create Student with Out of Range Semester (sem: 12)",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120666",
+      "name": "Rahul Verma",
+      "department": "Electrical Engineering",
+      "sem": 12,
+      "fees": 48000,
+      "isScholarship": false,
+      "email": "rahul.verma@example.com"
+    },
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "186",
+      "etag": "W/\"ba-5c9oy4QwqUnxQ43CRE1nbdHr8Gc\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Invalid Input Values",
+      "message": "One or more fields contain invalid values.",
+      "details": [
+        {
+          "field": "sem",
+          "error": "Semester must be an integer between 1 and 8."
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-09",
+    "category": "Invalid Input",
+    "name": "Create Student with Duplicate GRNO (Conflict)",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120035",
+      "name": "Duplicate User",
+      "department": "Computer Engineering",
+      "sem": 5,
+      "fees": 50000,
+      "isScholarship": false,
+      "email": "duplicate.user@example.com"
+    },
+    "expectedStatus": 409,
+    "actualStatus": 409,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "112",
+      "etag": "W/\"70-DJdWsmLYXiAU54h7mVrkGB27vMk\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Conflict",
+      "message": "A student with GRNO '92400120035' already exists in the system."
+    }
+  },
+  {
+    "id": "TC-10",
+    "category": "Invalid Input",
+    "name": "Retrieve Student with Non-Existent ID (ID: 9999)",
+    "method": "GET",
+    "path": "/api/students/9999",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 404,
+    "actualStatus": 404,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 2,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "94",
+      "etag": "W/\"5e-YyPbgJSVh3jM+etdhP7r+ZY+JLk\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Resource Not Found",
+      "message": "Student with ID 9999 was not found."
+    }
+  },
+  {
+    "id": "TC-11",
+    "category": "Invalid Input",
+    "name": "Retrieve Student with Non-Numeric ID Format ('abc')",
+    "method": "GET",
+    "path": "/api/students/abc",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 2,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "103",
+      "etag": "W/\"67-VZgR5k4pmQo8f5Jiz/plikTH1os\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Invalid ID format",
+      "message": "The student ID 'abc' must be a valid integer."
+    }
+  },
+  {
+    "id": "TC-12",
+    "category": "Invalid Input",
+    "name": "Update Non-Existent Student (ID: 9999)",
+    "method": "PUT",
+    "path": "/api/students/9999",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "name": "Non Existent"
+    },
+    "expectedStatus": 404,
+    "actualStatus": 404,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "110",
+      "etag": "W/\"6e-p08XnX7vKVoAVFtXA1FkTEeP7Zg\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Resource Not Found",
+      "message": "Cannot update. Student with ID 9999 does not exist."
+    }
+  },
+  {
+    "id": "TC-13",
+    "category": "Invalid Input",
+    "name": "Delete Student with Non-Numeric ID ('xyz')",
+    "method": "DELETE",
+    "path": "/api/students/xyz",
+    "headers": {},
+    "payload": null,
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "103",
+      "etag": "W/\"67-N6RErCPfP5UJj1d/+CbqX5ECiOE\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Invalid ID format",
+      "message": "The student ID 'xyz' must be a valid integer."
+    }
+  },
+  {
+    "id": "TC-14",
+    "category": "Missing Input",
+    "name": "Create Student with Missing Name Field",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "grno": "92400120555",
+      "department": "Information Technology",
+      "sem": 3,
+      "fees": 45000,
+      "email": "noname@example.com"
+    },
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "184",
+      "etag": "W/\"b8-tM+GCcpib/BOTRPME3PAjdTaUr0\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Validation Failed",
+      "message": "One or more required fields are missing or empty.",
+      "details": [
+        {
+          "field": "name",
+          "error": "Name is required and cannot be empty."
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-15",
+    "category": "Missing Input",
+    "name": "Create Student with Missing GRNO Field",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {
+      "name": "Pooja Mehta",
+      "department": "Computer Engineering",
+      "sem": 2,
+      "fees": 42000,
+      "email": "pooja.mehta@example.com"
+    },
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 1,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "184",
+      "etag": "W/\"b8-UCbOVDFARH3/T5y8Hsz1qOggWPY\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Validation Failed",
+      "message": "One or more required fields are missing or empty.",
+      "details": [
+        {
+          "field": "grno",
+          "error": "GRNO is required and cannot be empty."
+        }
+      ]
+    }
+  },
+  {
+    "id": "TC-16",
+    "category": "Missing Input",
+    "name": "Create Student with Empty Request Body ({})",
+    "method": "POST",
+    "path": "/api/students",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "payload": {},
+    "expectedStatus": 400,
+    "actualStatus": 400,
+    "statusPassed": true,
+    "validationPassed": true,
+    "overallResult": "PASS",
+    "responseTimeMs": 2,
+    "responseHeaders": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "*",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "122",
+      "etag": "W/\"7a-F8nVHlhXwTDIrrIh4o8x+aroXTg\"",
+      "date": "Wed, 30 Sep 2026 15:29:40 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "responseBody": {
+      "success": false,
+      "error": "Missing Request Body",
+      "message": "Request body cannot be empty. Please provide student details."
+    }
+  }
+]
